@@ -2,17 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios'
 
-function GstDetails(arr){
-    var len = arr.length;
-    var data = '';
-    if(len > 0){
-      for (var i=0;i<len;i++){
-        data = data + "<tr><td>" + arr[i][0] + "</td><td>" + arr[i][1] + "</td><td>" + arr[i][2] + "</td></tr>";
-      }
-    }
-    return data;
-}
-
 const User = props => (
     <tr>
         <td>{props.user.username}</td>
