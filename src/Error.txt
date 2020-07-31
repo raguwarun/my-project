@@ -1,0 +1,7 @@
+# Yet to correctly create edit user GST details, its an array append in correctly
+
+<tr>
+            {props.user.gstld.map(function(user){
+                return <td key={user} value={user}>{user}</td>
+            })}
+            </tr>

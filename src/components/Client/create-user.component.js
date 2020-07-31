@@ -15,6 +15,7 @@ export default class CreateUser extends Component {
         this.onChangegstin = this.onChangegstin.bind(this);
         this.onChangeNumber = this.onChangeNumber.bind(this);
         this.onChangebnkNumber = this.onChangebnkNumber.bind(this);
+        this.uppercase = this.uppercase.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
@@ -103,11 +104,10 @@ export default class CreateUser extends Component {
             arr = []
         }
 
-        var table = document.getElementById("banktable");
-        var arr = [];
-        var len = table.rows.length;
-        for (var j = 0;j<len;j++){
-            for (var i = 0;i<3;i++){
+        table = document.getElementById("banktable");
+        len = table.rows.length;
+        for (j = 0;j<len;j++){
+            for (i = 0;i<3;i++){
                 arr.push(table.rows[j].cells[i].innerHTML);
             }
             this.state.bnkld.push(arr);
@@ -144,6 +144,10 @@ export default class CreateUser extends Component {
         });
     }
 
+    uppercase(e) {
+        e.target.value = e.target.value.toUpperCase();
+    }
+
     render(){
         return(
             <div>
@@ -157,7 +161,6 @@ export default class CreateUser extends Component {
                         <label>Group Name : </label>
                         <select required className="form-control" value={this.state.groupname} onChange={this.onChangegroupname}>
                         <option key="" value=""></option>
-                        <option key="Primary" value="Primary">Primary</option>
                         {
                             this.state.groups.map(function(group) {
                                 return <option key={group} value={group} >{group}</option>
@@ -190,12 +193,12 @@ export default class CreateUser extends Component {
                     </div>
                     <div className="form-group">
                         <label>Permanent Account Number (PAN) :</label>
-                        <input type="String" className="form-control" minLength="10" maxLength="10" value={this.state.pan} onChange={this.onChangepan} />
+                        <input type="String" className="form-control" minLength="10" maxLength="10" value={this.state.pan} onKeyUp={this.uppercase} onChange={this.onChangepan} />
                         <input type="String" className="form-control" placeholder="Provide IT Password #" value={this.state.itpw} onChange={this.onChangeitpw} />
                     </div>
                     <div className="form-group">
                         <label>GST Identification Number (GSTIN) :</label>
-                        <input type="String" className="form-control" value={this.state.gstin} onChange={this.onChangegstin} />
+                        <input type="String" className="form-control" value={this.state.gstin} onKeyUp={this.uppercase} onChange={this.onChangegstin} />
                         <label>Number of GST Registrations : </label><input type="number" id="inputnum" onChange={this.onChangeNumber} />
                         <table className="table">
                             <thead>
