@@ -27,12 +27,24 @@ export default class CreateExercise extends Component {
   }
 
   componentDidMount() {
+    axios.get('http://localhost:5000/exercises/' + this.props.match.params.id)
+        .then(response => {
+            this.setState({
+                username: response.data.username,
+                worktype: response.data.worktype,
+                period: response.data.period,
+                alloteddate : new Date(response.data.alloteddate),
+                engagementletter : response.data.engagementletter,
+                targetdate: new Date(response.data.targetdate),
+            })
+        })
+        .catch((error) => {console.log(error);})
+
     axios.get('http://localhost:5000/users/')
         .then(response => {
             if (response.data.length > 0) {
                 this.setState({
                     users : response.data.map(user => user.username),
-                    username : response.data[0].username
                 });
             }
         })
@@ -89,9 +101,9 @@ export default class CreateExercise extends Component {
   
     console.log(exercise);
     
-    axios.post('http://localhost:5000/exercises/add', exercise)
+    axios.post('http://localhost:5000/exercises/update/'+this.props.match.params.id, exercise)
         .then(res => console.log(res.data));
-    window.location = '/';
+    window.location = '/assignment/';
   }
 
   render() {
