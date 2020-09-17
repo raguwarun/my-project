@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import propTypes from "prop-types";
+import { connect } from "react-redux";
+import { logoutUser } from "../../actions/authActions";
 
-export default class Navbar extends Component {
+class Navbar extends Component {
+    onLogoutClick = e =>{
+        e.preventDefault();
+        this.props.logoutUser();
+    }
+
     render (){
+        const  {user} = this.props.auth;
         return(
-            <div>
-            <nav className="navbar navbar-dark bg-primary navbar-expand-lg">
-                <Link to="/assignment/" className="navbar-brand">Home</Link>
-                <div className="ncollpase navbar-collapse">
+            <div className="navbar-fixed">
+            <nav className="navbar navbar-dark bg-primary navbar-expand-lg z-depth-0">
+                <Link to="/" className="navbar-brand">Home</Link>
+                <div className="collpase navbar-collapse">
                     <ul className="navbar-nav mr-auto">
                         <li className="navbar-item">
                             <Link to="/assignment/" className="nav-link">List</Link>
@@ -24,9 +33,9 @@ export default class Navbar extends Component {
                             <Link to="#" className="nav-link dropdown-toggle">Master</Link>
                             <div className="dropdown-menu mydropdown-content">
                             <div className="dropdown-header">Client</div>
-                                <Link to="/user/create" className="dropdown-item">Add Client</Link>
-                                <Link to="/user/" className="dropdown-item">Edit Client</Link>
-                                <Link to="/user/" className="dropdown-item">View Client</Link>
+                                <Link to="/client/create" className="dropdown-item">Add Client</Link>
+                                <Link to="/client/" className="dropdown-item">Edit Client</Link>
+                                <Link to="/client/" className="dropdown-item">View Client</Link>
                             <div className="divider"></div>
                             <div className="dropdown-header">Client Group</div>
                                 <Link to="/group/create" className="dropdown-item">Add Group</Link>
@@ -52,6 +61,17 @@ export default class Navbar extends Component {
                                     <Link to="/employee" className="dropdown-item">View Employee</Link>
                             </div>
                         </li>
+                        <li className="navbar-item dropdown mydropdown">
+                            <Link to="/templates" className="nav-link">Templates</Link>
+                        </li>
+                        <li className="navbar-item dropdown mydropdown">
+                            <Link to="#" className="nav-link dropdown-toggle">{user.loginid}</Link>
+                            <div className="dropdown-menu mydropdown-content">
+                                <Link to="#" className="dropdown-item">{user.name}</Link>
+                                <Link to="#" className="dropdown-item">{user.status}</Link>
+                                <Link to="/" className="dropdown-item" onClick={this.onLogoutClick}>Logout</Link>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -59,3 +79,17 @@ export default class Navbar extends Component {
         )
     }
 }
+
+Navbar.propTypes={
+    logoutUser: propTypes.func.isRequired,
+    auth: propTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(
+    mapStateToProps,
+    {logoutUser}
+)(Navbar);

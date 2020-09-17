@@ -10,6 +10,10 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
   const username = req.body.username;
   const worktype = req.body.worktype;
+  const principalname = req.body.principalname;
+  const articlename = req.body.articlename;
+  const workCompleted = req.body.workCompleted;
+  const udin = req.body.udin;
   const alloteddate = Date.parse(req.body.alloteddate);
   const engagementletter = req.body.engagementletter;
   const targetdate = Date.parse(req.body.targetdate);
@@ -18,10 +22,14 @@ router.route('/add').post((req, res) => {
   const newExercise = new Exercise({
     username,
     worktype,
+    principalname,
+    articlename,
     alloteddate,
     engagementletter,
     targetdate,
     period,
+    workCompleted,
+    udin,
   });
 
   newExercise.save()
@@ -46,9 +54,13 @@ router.route('/update/:id').post((req,res)=>{
         .then(exercise => {
             exercise.username = req.body.username;
             exercise.worktype = req.body.worktype;
+            exercise.articlename= req.body.articlename;
+            exercise.principalname = req.body.principalname;
             exercise.alloteddate = Date.parse(req.body.alloteddate);
             exercise.engagementletter = req.body.engagementletter;
             exercise.targetdate = Date.parse(req.body.targetdate);
+            exercise.workCompleted = req.body.workCompleted;
+            exercise.udin = req.body.udin;
             exercise.period = req.body.period;
 
             exercise.save()

@@ -6,6 +6,10 @@ const Exercise = props => (
     <tr>
         <td>{props.exercise.username}</td>
         <td>{props.exercise.worktype}</td>
+        <td>{props.exercise.principalname}</td>
+        <td><ul>{props.exercise.articlename.map(function(data){
+            return <li key={data} value={data}>{data}</li>
+        })}</ul></td>
         <td>{props.exercise.alloteddate.substring(0,10)}</td>
         <td>{props.exercise.engagementletter}</td>
         <td>{props.exercise.targetdate.substring(0,10)}</td>
@@ -55,6 +59,8 @@ export default class ExercisesList extends Component {
                         <tr>
                             <th>Username</th>
                             <th>Work Type</th>
+                            <th>Audit Head</th>
+                            <th>Team</th>
                             <th>Alloted Date</th>
                             <th>Engagement Letter</th>
                             <th>Target Date</th>

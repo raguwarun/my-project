@@ -33,7 +33,7 @@ export default class CreateUser extends Component {
         }
     }
     componentDidMount() {
-        axios.get('http://localhost:5000/users/' + this.props.match.params.id)
+        axios.get('http://localhost:5000/clients/' + this.props.match.params.id)
             .then(response => {
                 this.setState({
                     id : response.data.id,
@@ -145,7 +145,7 @@ export default class CreateUser extends Component {
             bnkld : this.state.bnkld
         }
         console.log(newUser);
-        axios.post('http://localhost:5000/users/update/'+this.props.match.params.id, newUser)
+        axios.post('http://localhost:5000/clients/update/'+this.props.match.params.id, newUser)
             .then(res => console.log(res.data));
             
         this.setState({

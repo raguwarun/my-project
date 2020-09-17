@@ -11,6 +11,7 @@ export default class CreatePrincipal extends Component{
         this.onChangeRegistrtionnum = this.onChangeRegistrtionnum.bind(this);
         this.OnChangeArticlename = this.OnChangeArticlename.bind(this);
         this.onChangemembername = this.onChangemembername.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
         this.onChangebirthdate = this.onChangebirthdate.bind(this);
         this.onChangepassdate = this.onChangepassdate.bind(this);
         this.onChangejoindate = this.onChangejoindate.bind(this);
@@ -24,6 +25,7 @@ export default class CreatePrincipal extends Component{
             registrationnum : '',
             articlename : '',
             principalname : '',
+            password : '',
             birthdate : new Date(),
             passdate : new Date(),
             joindate : new Date(),
@@ -60,6 +62,7 @@ export default class CreatePrincipal extends Component{
     onChangemembermail(e) {this.setState({articlemail : e.target.value});}
     onChanegAddress(e) {this.setState({articleaddress : e.target.value});}
     onChangeotherdetails(e) {this.setState({otherdetails : e.target.value});}
+    onChangePassword(e) {this.setState({password : e.target.value});}
 
     onSubmit(e) {
         e.preventDefault();
@@ -77,16 +80,26 @@ export default class CreatePrincipal extends Component{
             articleaddress : this.state.articleaddress,
             otherdetails : this.state.otherdetails,
         }
-
+        const newUser = {
+            name : this.state.articlename,
+            status : "Article",
+            loginid : this.state.registrationnum,
+            password : this.state.password,
+        }
         console.log(newarticle);
 
         axios.post('http://localhost:5000/articles/add/' , newarticle)
-            .then(res => console.log(res.data))
+            .then(res => {
+                console.log(res.data)
+                axios.post("http://localhost:5000/users/add", newUser)
+                    .then(res => console.log(res.data));
+            });
 
         this.setState({
             registrationnum : '',
             articlename : '',
             principalname: '',
+            password : '',
             birthdate : new Date(),
             passdate : new Date(),
             joindate : new Date(),
@@ -120,6 +133,10 @@ export default class CreatePrincipal extends Component{
                             })
                         }
                         </select>
+                    </div>
+                    <div className="form-group">
+                        <label>Desired Password<b style={{color:"red"}}>*</b> :</label>
+                        <input required type="password" className="form-control" value={this.state.password} onChange={this.onChangePassword} />
                     </div>
                     <div className="form-group">
                         <label>Date of Birth<b style={{color:"red"}}>*</b> :</label>

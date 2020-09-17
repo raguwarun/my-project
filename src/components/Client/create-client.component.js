@@ -128,7 +128,7 @@ export default class CreateUser extends Component {
             bnkld : this.state.bnkld
         }
         console.log(newUser);
-        axios.post('http://localhost:5000/users/add', newUser)
+        axios.post('http://localhost:5000/clients/add', newUser)
             .then(res => console.log(res.data));
             
         this.setState({

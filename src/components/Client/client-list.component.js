@@ -2,62 +2,62 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios'
 
-const User = props => (
+const Client = props => (
     <tr>
-        <td>{props.user.username}</td>
-        <td>{props.user.status}</td>
-        <td>{props.user.groupname}</td>
-        <td>{props.user.dob}</td>
-        <td>{props.user.pan}</td>
-        <td>{props.user.itpw}</td>
-        <td>{props.user.gstin}</td>
-        <td><table><thead><tr><th>State</th><th>GST Id</th><th>GST Password</th></tr></thead><tbody>
-            {props.user.gstld.map(function(user){
-                return <tr>{user.map(function(data){
+        <td>{props.client.username}</td>
+        <td>{props.client.status}</td>
+        <td>{props.client.groupname}</td>
+        <td>{props.client.dob}</td>
+        <td>{props.client.pan}</td>
+        <td>{props.client.itpw}</td>
+        <td>{props.client.gstin}</td>
+        <td><table><thead><tr><th>State</th><th>GST Id</th><th>Password</th></tr></thead><tbody>
+            {props.client.gstld.map(function(client){
+                return <tr>{client.map(function(data){
                     return <td key={data} value={data}>{data}</td>})}</tr>
             })}
             </tbody></table></td>
         <td><table><thead><tr><th>Bank</th><th>IFSC</th><th>Account No.</th></tr></thead><tbody>
-            {props.user.bnkld.map(function(user){
-                return <tr>{user.map(function(data){
+            {props.client.bnkld.map(function(client){
+                return <tr>{client.map(function(data){
                     return <td key={data} value={data}>{data}</td>})}</tr>
             })}
             </tbody></table></td>
         <td>
-            <Link to={"/users/edit/" + props.user._id}>edit</Link> | 
-            <a href="#" onClick={() => {props.deleteUser(props.user._id)}}>delete</a>
+            <Link to={"/client/edit/" + props.client._id}>edit</Link> | 
+            <a href="#" onClick={() => {props.deleteClient(props.client._id)}}>delete</a>
         </td>       
     </tr>
 )
 
-export default class UsersList extends Component {
+export default class ClientsList extends Component {
     constructor(props) {
         super(props);
-        this.deleteUser = this.deleteUser.bind(this);
+        this.deleteClient = this.deleteClient.bind(this);
         this.myFunction = this.myFunction.bind(this);
-        this.state = {users : []};
+        this.state = {clients : []};
     }
 
     componentDidMount() {
-        axios.get('http://localhost:5000/users/')
+        axios.get('http://localhost:5000/clients/')
             .then(response => {
-                this.setState({users : response.data});
+                this.setState({clients : response.data});
                 console.log(response.data[0].gstld);
             })
             .catch(error => {console.log(error);})
     }
 
-    deleteUser(id) {
-        axios.delete('http://localhost:5000/users/' + id)
+    deleteClient(id) {
+        axios.delete('http://localhost:5000/clients/' + id)
             .then(res => console.log(res.data));
         this.setState({
-            users : this.state.users.filter(el => el._id !== id)
+            clients : this.state.clients.filter(el => el._id !== id)
         })
     }
 
-    UsersList() {
-        return this.state.users.map(currentuser => {
-            return <User user={currentuser} deleteUser={this.deleteUser} key={currentuser._id} />;
+    ClientsList() {
+        return this.state.clients.map(currentclient => {
+            return <Client client={currentclient} deleteClient={this.deleteClient} key={currentclient._id} />;
         })
     }
 
@@ -100,7 +100,7 @@ export default class UsersList extends Component {
                             <th>groupname</th>
                             <th>dob</th>
                             <th>pan</th>
-                            <th>itpw</th>
+                            <th>Password</th>
                             <th>gstin</th>
                             <th>gstld</th>
                             <th>bnkld</th>
@@ -108,7 +108,7 @@ export default class UsersList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.UsersList() }
+                        { this.ClientsList() }
                     </tbody>
                 </table>
                 </div>

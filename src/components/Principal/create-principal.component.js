@@ -10,6 +10,7 @@ export default class CreatePrincipal extends Component{
         this.onSubmit = this.onSubmit.bind(this);
         this.onChangemembership = this.onChangemembership.bind(this);
         this.onChangeMemberName = this.onChangeMemberName.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
         this.onChangebirthdate = this.onChangebirthdate.bind(this);
         this.onChangepassdate = this.onChangepassdate.bind(this);
         this.onChangejoindate = this.onChangejoindate.bind(this);
@@ -23,6 +24,7 @@ export default class CreatePrincipal extends Component{
             membershipno : '',
             membername : '',
             memberpan : '',
+            password : '',
             birthdate : new Date(),
             passdate : new Date(),
             joindate : new Date(),
@@ -35,6 +37,7 @@ export default class CreatePrincipal extends Component{
 
     onChangemembership(e){this.setState({membershipno : e.target.value});}
     onChangeMemberName(e){this.setState({membername : e.target.value});}
+    onChangePassword(e) {this.setState({password : e.target.value});}
     onChangebirthdate(date){this.setState({birthdate : date});}
     onChangepassdate(date){this.setState({passdate : date});}
     onChangejoindate(date){this.setState({joindate : date});}
@@ -60,15 +63,27 @@ export default class CreatePrincipal extends Component{
             memaddress : this.state.memaddress,
         }
 
+        const newUser = {
+            name : this.state.membername,
+            status : "Principal",
+            loginid : this.state.membershipno,
+            password : this.state.password,
+        }
+
         console.log(newPrincipal);
 
         axios.post('http://localhost:5000/principals/add', newPrincipal)
-            .then(res => console.log(res.data));
+            .then(res => {
+                console.log(res.data);
+                axios.post("http://localhost:5000/users/add", newUser)
+                    .then(res => console.log(res.data));
+            });
 
         this.setState({
             membershipno : '',
             membername : '',
             memberpan : '',
+            password : '',
             birthdate : new Date(),
             passdate : new Date(),
             joindate : new Date(),
@@ -92,12 +107,16 @@ export default class CreatePrincipal extends Component{
                         <input required type="text" className="form-control" value={this.state.membername} onChange={this.onChangeMemberName} />
                     </div>
                     <div className="form-group">
+                        <label>Desired Password<b style={{color:"red"}}>*</b> :</label>
+                        <input required type="password" className="form-control" value={this.state.password} onChange={this.onChangePassword} />
+                    </div>
+                    <div className="form-group">
                         <label>Permanent Account Number (PAN)<b style={{color:"red"}}>*</b> :<b style={{color:"red"}}>*</b> :</label>
                         <input required type="text" className="form-control" value={this.state.memberpan} onChange={this.onChangeMemberpan} />
                     </div>
                     <div className="form-group">
                         <label>Date of Birth<b style={{color:"red"}}>*</b> :</label>
-                        <div><DatePicker required className="form-control" selected={this.state.birthdate} onChange={this.onChangebirthdate}></DatePicker></div>
+                        <div><DatePicker utcOffset={0} required className="form-control" selected={this.state.birthdate} onChange={this.onChangebirthdate}></DatePicker></div>
                     </div>
                     <div className="form-group">
                         <label>Date of Membership<b style={{color:"red"}}>*</b> :</label>
